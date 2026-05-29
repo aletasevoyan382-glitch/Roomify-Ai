@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="hy">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roomify AI | Ինտերիեր դիզայնի ապագան</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body class="dark-theme">
+    <!-- Navigation -->
+    <nav class="glass-nav">
+        <div class="logo">Roomify <span>AI</span></div>
+        <ul class="nav-links">
+            <li><a href="#" onclick="showSection('home')">Գլխավոր</a></li>
+            <li><a href="#" onclick="showSection('dashboard')">Իմ Նախագծերը</a></li>
+        </ul>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home" class="hero section active">
+        <div class="hero-content">
+            <h1 class="animate-up">Վերափոխեք Ձեր Տունը <br><span class="gradient-text">AI Տեխնոլոգիայով</span></h1>
+            <p class="animate-up delay-1">Սկանավորեք սենյակը և ստեղծեք 2D դիզայն վայրկյանների ընթացքում:</p>
+            <div class="hero-btns animate-up delay-2">
+                <button class="btn-primary" onclick="showSection('auth')">Սկսել (Get Started)</button>
+                <button class="btn-secondary" onclick="openAbout()">Ավելին (Learn More)</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Auth Section (Sign Up) -->
+    <section id="auth" class="section">
+        <div class="container small-container">
+            <div class="glass-card p-40">
+                <h2 class="section-title">Գրանցում</h2>
+                <div class="form-group">
+                    <input type="text" placeholder="Անուն" id="user-name">
+                    <input type="email" placeholder="Էլ. փոստ" id="user-email">
+                    <input type="password" placeholder="Գաղտնաբառ">
+                    <button class="btn-primary w-100 mt-20" onclick="handleAuth()">Շարունակել</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Modal -->
+    <div id="about-modal" class="modal">
+        <div class="modal-content glass-card">
+            <span class="close" onclick="closeAbout()">&times;</span>
+            <h2>Roomify AI-ի Մասին</h2>
+            <p>Մեր կայքը թույլ է տալիս ստեղծել պրոֆեսիոնալ ինտերիեր դիզայն: Օգտագործելով OpenCV վերլուծությունը՝ մենք սկանավորում ենք ձեր սենյակը և թույլ տալիս տեղադրել իրական 2D կահույք:</p>
+            <ul class="features-list">
+                <li>✨ AI Սկանավորում</li>
+                <li>🪑 2D Կահույքի կատալոգ</li>
+                <li>🎨 Գույների ընտրություն</li>
+                <li>📁 Նախագծերի պահպանում</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Upload/Scan Section -->
+    <section id="upload" class="section">
+        <div class="container">
+            <h2 class="section-title">Սկանավորել Սենյակը</h2>
+            <div id="drop-zone" class="drop-zone glass-card">
+                <div class="drop-zone-content">
+                    <i class="fas fa-expand"></i>
+                    <p>Վերբեռնեք լուսանկարը սկանավորման համար</p>
+                    <input type="file" id="file-input" hidden accept="image/*">
+                </div>
+            </div>
+            <div id="preview-container" class="preview-container glass-card" style="display:none">
+                <img id="image-preview" src="" alt="Preview">
+                <button class="btn-primary mt-20" id="analyze-btn">Սկսել Սկանավորումը</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Editor Section -->
+    <section id="editor" class="section">
+        <div class="editor-container">
+            <aside class="sidebar glass-card">
+                <h3>Կատալոգ (2D)</h3>
+                <div class="furniture-categories">
+                    <!-- Ննջասենյակ -->
+                    <div class="cat-group">
+                        <span>Ննջասենյակ</span>
+                        <div class="furn-options">
+                            <div class="furn-item" draggable="true" ondragstart="drag(event)" data-type="bed" data-icon="🛏️" data-style="King Size">King Bed</div>
+                            <div class="furn-item" draggable="true" ondragstart="drag(event)" data-type="bed" data-icon="🛌" data-style="Single">Single Bed</div>
+                            <div class="furn-item" draggable="true" ondragstart="drag(event)" data-type="wardrobe" data-icon="🚪" data-style="Wooden">Պահարան</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Հյուրասենյակ -->
+                    <div class="cat-group">
+                        <span>Հյուրասենյակ</span>
+                        <div class="furn-options">
+                            <div class="furn-item" draggable="true" ondragstart="drag(event)" data-type="sofa" data-icon="🛋️" data-style="Modern">Բազմոց 1</div>
+                            <div class="furn-item" draggable="true" ondragstart="drag(event)" data-type="sofa" data-icon="🧱" data-style="Corner">Անկյունային</div>
+                            <div class="furn-item" draggable="true" ondragstart="drag(event)" data-type="armchair" data-icon="💺" data-style="Soft">Բազկաթոռ</div>
+                        </div>
+                    </div>
+
+                    <!-- Ճաշասենյակ և Խոհանոց -->
+                    <div class="cat-group">
+                        <span>Սեղան և Աթոռ</span>
+                        <div class="furn-options">
+                            <div class="furn-item" draggable="true" ondragstart="drag(event)" data-type="table" data-icon="🍽️" data-style="Round">Կլոր սեղան</div>
+                            <div class="furn-item" draggable="true" ondragstart="drag(event)" data-type="table" data-icon="🔲" data-style="Square">Քառակուսի</div>
+                            <div class="furn-item" draggable="true" ondragstart="drag(event)" data-type="chair" data-icon="🪑" data-style="Office">Աթոռ</div>
+                        </div>
+                    </div>
+
+                    <!-- Գրասենյակ -->
+                    <div class="cat-group">
+                        <span>Գրասենյակ</span>
+                        <div class="furn-options">
+                            <div class="furn-item" draggable="true" ondragstart="drag(event)" data-type="desk" data-icon="💻" data-style="Tech">Գրասեղան</div>
+                            <div class="furn-item" draggable="true" ondragstart="drag(event)" data-type="bookshelf" data-icon="📚" data-style="Classic">Գրապահարան</div>
+                        </div>
+                    </div>
+
+                    <!-- Դեկոր և Լուսավորություն -->
+                    <div class="cat-group">
+                        <span>Դեկոր և Լույս</span>
+                        <div class="furn-options">
+                            <div class="furn-item" draggable="true" ondragstart="drag(event)" data-type="lamp" data-icon="💡" data-style="Floor">Լամպ</div>
+                            <div class="furn-item" draggable="true" ondragstart="drag(event)" data-type="plant" data-icon="🪴" data-style="Indoor">Բույս</div>
+                            <div class="furn-item" draggable="true" ondragstart="drag(event)" data-type="mirror" data-icon="🪞" data-style="Large">Հայելի</div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Գույներ</h3>
+                <div class="color-picker">
+                    <label>Պատեր: <input type="color" id="wall-color" value="#ffffff" onchange="changeColor('wall')"></label>
+                </div>
+
+                <button class="btn-primary mt-20 w-100" onclick="saveCurrentProject()">Պահպանել</button>
+            </aside>
+
+            <main class="editor-viewport glass-card" id="editor-viewport" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <div id="canvas-overlay" class="canvas-overlay"></div>
+                <img id="editor-base-img" src="">
+            </main>
+        </div>
+    </section>
+
+    <!-- Summary / Final Section -->
+    <section id="summary" class="section">
+        <div class="container small-container">
+            <div class="glass-card p-40 text-center">
+                <h2 class="gradient-text">Շնորհավորում ենք:</h2>
+                <p>Ձեր դիզայնը հաջողությամբ պահպանվել է:</p>
+                <div id="final-preview" class="mt-20"></div>
+                <button class="btn-primary mt-20" onclick="showSection('dashboard')">Անցնել Իմ Նախագծերին</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Section -->
+    <section id="dashboard" class="section">
+        <div class="container">
+            <h2 class="section-title">Իմ Նախագծերը</h2>
+            <div id="projects-list" class="projects-grid"></div>
+        </div>
+    </section>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

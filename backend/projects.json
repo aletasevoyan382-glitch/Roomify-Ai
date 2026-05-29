@@ -1,0 +1,105 @@
+[
+    {
+        "image": "/uploads/239d8799-b9b5-4f5b-bf31-3cc53bbee6c6_e2e4b3fe7d2ddd55e4956ad0aafa4ea5.jpg",
+        "furniture": [
+            {
+                "type": "sofa",
+                "icon": "\ud83d\udecb\ufe0f",
+                "x": 477.9624938964844,
+                "y": 245.79999542236328,
+                "scale": 1
+            },
+            {
+                "type": "plant",
+                "icon": "\ud83e\udeb4",
+                "x": 388.9624938964844,
+                "y": 355.7999954223633,
+                "scale": 1
+            }
+        ],
+        "timestamp": "2026-05-29T19:03:26.600Z",
+        "id": "b8331f39-0a23-49fd-9f52-ee15d6722d5a"
+    },
+    {
+        "image": "/uploads/9685a478-cbae-44e2-b03a-6ca935c7e911_5f9f38a12ae129e92db43a5e8309a9d4.jpg",
+        "furniture": [
+            {
+                "type": "",
+                "icon": "",
+                "x": 266.5999755859375,
+                "y": 177,
+                "scale": 1
+            },
+            {
+                "type": "",
+                "icon": "",
+                "x": 411.5999755859375,
+                "y": 173,
+                "scale": 1
+            }
+        ],
+        "timestamp": "2026-05-29T19:20:16.124Z",
+        "id": "433191d8-fff7-4f87-a994-0549b90b2623"
+    },
+    {
+        "image": "/uploads/fc66557c-b7fa-46d7-8a0d-8e0a1b9c15b4_1780084359710..jpg",
+        "furniture": [],
+        "timestamp": "2026-05-29T19:53:06.342Z",
+        "id": "bba6e5ac-aafb-4b06-a053-c612aae5517b"
+    },
+    {
+        "image": "/uploads/1d9e43b4-063b-4512-908a-a89dda324237_1000035192.jpg",
+        "furniture": [],
+        "timestamp": "2026-05-29T20:03:05.534Z",
+        "id": "fc32d291-1521-4dcb-bd00-a67b6987f4e7"
+    },
+    {
+        "image": "/uploads/c27bbf91-b5d5-40a8-a49f-2161637c49ea_5f9f38a12ae129e92db43a5e8309a9d4.jpg",
+        "furniture": [
+            {
+                "type": "bed",
+                "icon": "\ud83d\udecf\ufe0f",
+                "x": 263.5999755859375,
+                "y": 219,
+                "scale": 1
+            },
+            {
+                "type": "bed",
+                "icon": "\ud83d\udecc",
+                "x": 104.5999755859375,
+                "y": 151,
+                "scale": 1
+            },
+            {
+                "type": "wardrobe",
+                "icon": "\ud83d\udeaa",
+                "x": 333.5999755859375,
+                "y": 340,
+                "scale": 1
+            },
+            {
+                "type": "table",
+                "icon": "\ud83c\udf7d\ufe0f",
+                "x": 341.5999755859375,
+                "y": 419,
+                "scale": 1
+            },
+            {
+                "type": "desk",
+                "icon": "\ud83d\udcbb",
+                "x": 124.5999755859375,
+                "y": 289,
+                "scale": 1
+            },
+            {
+                "type": "mirror",
+                "icon": "\ud83e\ude9e",
+                "x": 328.5999755859375,
+                "y": 533,
+                "scale": 1
+            }
+        ],
+        "timestamp": "2026-05-29T20:09:23.187Z",
+        "id": "45c580c1-9372-4bef-90ac-d87e83bb5a61"
+    }
+]
