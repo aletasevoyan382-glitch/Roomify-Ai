@@ -29,14 +29,12 @@ function handleAuth() {
     const name = document.getElementById('user-name').value.trim();
     const email = document.getElementById('user-email').value.trim();
     
-    // Strict Name validation: Only Armenian or Latin letters, at least 2 chars
     const nameRegex = /^[a-zA-Zա-ֆԱ-Ֆև\s]{2,}$/;
     if (!nameRegex.test(name)) {
         alert("Խնդրում ենք լրացնել վավեր անուն (միայն տառեր, նվազագույնը 2 նիշ):");
         return;
     }
 
-    // Strict Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
         alert("Խնդրում ենք լրացնել վավեր էլ. հասցե (օրինակ՝ user@example.com):");
@@ -47,7 +45,6 @@ function handleAuth() {
     showSection('upload');
 }
 
-// Modal handling
 function openAbout() { document.getElementById('about-modal').style.display = 'block'; }
 function closeAbout() { document.getElementById('about-modal').style.display = 'none'; }
 
@@ -94,12 +91,29 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const response = await fetch('/upload', { method: 'POST', body: formData });
                 const data = await response.json();
+                
                 if (data.filename) {
                     roomStructure = data.structure;
                     currentBaseImage = `/uploads/${data.filename}`;
-                    startEditor(currentBaseImage);
+                    
+                    // Անմիջապես անցնել խմբագրիչին
+                    showSection('editor');
+                    document.getElementById('editor-base-img').src = currentBaseImage;
+                    
+                    // Սկանավորման գծերը ցույց տալ մի փոքր ուշացումով
+                    setTimeout(renderStructure, 800);
+                } else {
+                    alert("Սխալ: Սերվերը չի վերադարձրել նկարի անունը:");
                 }
             } catch (err) {
+                console.error("Scan Error:", err);
+                // Եթե նույնիսկ սխալ լինի, թույլ տանք օգտատիրոջը անցնել խմբագրիչ, որպեսզի կանգ չառնի
+                alert("Սերվերը դանդաղ է աշխատում, բայց մենք բացում ենք խմբագրիչը...");
+                showSection('editor');
+            }
+
+            } catch (err) {
+                console.error(err);
                 alert("Սկանավորման սխալ: Փորձեք կրկին:");
             } finally {
                 analyzeBtn.innerText = "Սկսել Սկանավորումը";
@@ -113,11 +127,12 @@ document.addEventListener('DOMContentLoaded', () => {
 function startEditor(imageSrc) {
     document.getElementById('editor-base-img').src = imageSrc;
     showSection('editor');
-    renderStructure();
+    setTimeout(renderStructure, 500);
 }
 
 function renderStructure() {
     const overlay = document.getElementById('canvas-overlay');
+    if (!overlay) return;
     overlay.innerHTML = '';
     if (!roomStructure) return;
 
@@ -159,6 +174,7 @@ function addFurnitureToCanvas(type, icon, x, y) {
     furn.className = 'placed-furn';
     furn.style.left = `${x}px`; furn.style.top = `${y}px`;
     furn.style.fontSize = '3rem';
+    furn.dataset.rotation = 0;
     
     const content = document.createElement('span');
     content.innerText = icon;
@@ -167,16 +183,25 @@ function addFurnitureToCanvas(type, icon, x, y) {
     const controls = document.createElement('div');
     controls.className = 'furn-controls';
     controls.innerHTML = `
-        <button class="control-btn" onclick="resizeFurn(event, 1.1)">+</button>
-        <button class="control-btn" onclick="resizeFurn(event, 0.9)">-</button>
-        <button class="control-btn" onclick="deleteFurn(event)">🗑️</button>
+        <button class="control-btn" title="Մեծացնել" onclick="resizeFurn(event, 1.1)">+</button>
+        <button class="control-btn" title="Փոքրացնել" onclick="resizeFurn(event, 0.9)">-</button>
+        <button class="control-btn" title="Պտտել" onclick="rotateFurn(event, 45)">🔄</button>
+        <button class="control-btn" title="Հեռացնել" onclick="deleteFurn(event)">🗑️</button>
     `;
     furn.appendChild(controls);
     
     furn.onclick = (e) => { e.stopPropagation(); selectElement(furn); };
     furn.onmousedown = (e) => startDrag(e, furn);
     document.getElementById('editor-viewport').appendChild(furn);
-    placedFurniture.push({ type, icon, x, y, scale: 1 });
+}
+
+function rotateFurn(e, degrees) {
+    e.stopPropagation();
+    const furn = e.target.closest('.placed-furn');
+    let currentRotation = parseInt(furn.dataset.rotation) || 0;
+    currentRotation = (currentRotation + degrees) % 360;
+    furn.dataset.rotation = currentRotation;
+    furn.style.transform = `rotate(${currentRotation}deg)`;
 }
 
 function selectElement(el) {
